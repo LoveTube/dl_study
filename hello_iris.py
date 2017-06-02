@@ -13,27 +13,31 @@ learning_rate = 0.1
 tf.set_random_seed(777)  # reproducibility
 training_epochs = 200
 
+#read data
 csv_data = pd.read_csv('D:/work/personal/python3/iris.csv')
 
+#read column
 SepalLengthCm = np.array(csv_data.SepalLengthCm.as_matrix()).reshape((index,1))
 SepalWidthCm = np.array(csv_data.SepalWidthCm.as_matrix()).reshape((index,1))
 PetalLengthCm = np.array(csv_data.PetalLengthCm.as_matrix()).reshape((index,1))
 PetalWidthCm = np.array(csv_data.PetalWidthCm.as_matrix()).reshape((index,1))
 
+#merge column
+x_data = np.concatenate((SepalLengthCm,SepalWidthCm,PetalLengthCm,PetalWidthCm), axis = 1)
 
 y_data = np.array(csv_data.Species.as_matrix())
 
 
-x_data = np.concatenate((SepalLengthCm,SepalWidthCm,PetalLengthCm,PetalWidthCm), axis = 1)
-
+#one-hot encoding
 n_values = np.max(y_data) + 1
 y_data = np.eye(n_values)[y_data]
 
+#build network
 x_data = np.array(x_data, dtype=np.float32)
 y_data = np.array(y_data, dtype=np.float32)
 
-X = tf.placeholder(tf.float32, [None, 4])
-Y = tf.placeholder(tf.float32, [None, 3])
+X = tf.placeholder(tf.float32, [None, 4]) #same as input size
+Y = tf.placeholder(tf.float32, [None, 3]) #same as output size
 
 
 W1 = tf.get_variable("W1", shape=[4, 256],
